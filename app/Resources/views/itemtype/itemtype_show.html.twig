@@ -1,0 +1,12 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+  <div class="container">
+    <div class="jumbotron">
+      <h2>{{itemtype.id}}:{{itemtype.manufacturer}}
+        <small>{{itemtype.model }}</small>
+      </h2>
+      <p>
+        {{itemtype.description}}</p>
+    </div>
+  </div>
+{% endblock %}

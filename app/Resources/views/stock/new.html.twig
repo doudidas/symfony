@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+  <div class="container">
+    <div class="jumbotron">
+      <h1>
+        Ajout d'un stock
+      </h1>
+      <div class="form-group">
+        {{ form_start(form, {'attr':{'class':'form-horizontal'}}) }}
+        {{ form_errors(form) }}
+        {{ form_row(form.item,{'attr':{'class':'form-control'}}) }}
+        {{ form_row(form.sellprice,{'attr':{'class':'form-control'}}) }}
+        {{ form_row(form.currentstock,{'attr':{'class':'form-control'}}) }}
+        {{ form_row(form.minstock,{'attr':{'class':'form-control'}}) }}
+      </div>
+      {{ form_row(form.save,{'attr':{'class':'btn btn-default'}}) }}
+      {{ form_end(form) }}
+    </div>
+  </div>
+{% endblock %}

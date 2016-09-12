@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+  <div class="container">
+    <h1>Nos Types</h1>
+    {% for itemtype in itemtypes %}
+      <div class="jumbotron">
+        <h2>{{itemtype.id}}:{{itemtype.manufacturer}}</h2>
+        <h3>{{itemtype.model }}</h3>
+        <p>{{itemtype.description}}</br>
+        <button
+          onclick="javascripts:delete_type({{itemtype.id}});"
+          type="button"
+          class="btn btn-danger btn-sm">Supprimer</button>
+          <small style="color:orange">manager</small>
+        </p>
+      </div>
+    {% endfor %}
+    <script>
+      function delete_type(id) {
+        toto = '/manager/itemtype/del' + id;
+        $(location).attr('href', toto);
+        return 0;
+      }
+      </script>
+  {% endblock %}

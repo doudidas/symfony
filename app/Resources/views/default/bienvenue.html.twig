@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div style="padding-bottom:100px"> </div>
+    <div class="container">
+      <div class="jumbotron">
+        <h1> Bienvenue </h1>
+        <p> veuillez vous identifier pour utiliser des actions avancées </br>
+           code couleur <span style="color:red">webmaster</span>, <span style="color:orange">manager</span>, <span style="color:gray">seller</span></p>
+        <p> vous etes actuellement identifié comme:  {{app.user}}</p>
+        <a href="/login"><button type="button" class="btn btn">login</button></a>
+        <a href="/register"><button type="button" class="btn btn">sign in</button></a>
+    </div>
+  </div>
+
+  {% endblock %}

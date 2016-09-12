@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+  <div class="container">
+    <h1>Nos stocks</h1>
+    {% for stock in stocks %}
+      <div class="jumbotron">
+        <h2>{{stock.item.id}}:{{stock.item.model}}
+          <small>{{stock.item.manufacturer }}</small>
+        </h2>
+        <p>
+          {{stock.item.description}}</p>
+        <button
+          onclick="javascripts:delete_stock({{stock.id}},{{stock.minstock}});"
+          class="btn btn-warning btn-sm ">Retirer</button>
+            <small style="color:orange">manager</small>
+        <h2>Information sur le stocks</h2>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th>prix</th>
+              <th>stock actuel</th>
+              <th>stock minimum</th>
+              <th>Ajouter stock</th>
+              <th>Diminuer stock</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>{{stock.sellprice}}</td>
+              <td>{{stock.currentstock}}</td>
+              <td>{{stock.minstock}}</td>
+              <td>
+                <button
+                  onclick="javascripts:ajouterstock({{stock.id}});"
+                  type="button"
+                  class="btn btn-success btn-sm"
+                  value="{{stock.minstock}}">Ajouter</button>
+                    <small style="color:gray">seller</small>
+              </td>
+              <td>
+                <button
+                  onclick="javascripts:diminuerstock({{stock.id}});"
+                  type="button"
+                  class="btn btn-danger btn-sm">Retirer</button>
+                    <small style="color:gray">seller</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <script>
+        function ajouterstock(id) {
+          toto = '/seller/stock/inc_stock' + id;
+          $(location).attr('href', toto);
+          return 0;
+        }
+        function diminuerstock(id) {
+          toto = '/seller/stock/dim_stock' + id;
+          $(location).attr('href', toto);
+          return 0;
+        }
+        function delete_stock(id, min) {
+          if (min == 0) {
+            toto = '/manager/stock/del' + id;
+            $(location).attr('href', toto);
+          } else {
+            alert("il reste du stock");
+          }
+          return 0;
+        }
+      </script>
+    {% endfor %}
+  {% endblock %}
