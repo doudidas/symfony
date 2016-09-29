@@ -46,6 +46,7 @@ class ComposerStaticInit130fb5116714b6c2da66a4b026258e89
         'P' => 
         array (
             'Psr\\Log\\' => 8,
+            'Psr\\Cache\\' => 10,
         ),
         'M' => 
         array (
@@ -150,6 +151,10 @@ class ComposerStaticInit130fb5116714b6c2da66a4b026258e89
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
+        ),
+        'Psr\\Cache\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/psr/cache/src',
         ),
         'Monolog\\' => 
         array (

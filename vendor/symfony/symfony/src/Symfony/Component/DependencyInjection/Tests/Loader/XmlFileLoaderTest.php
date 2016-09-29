@@ -11,6 +11,7 @@
 
 namespace Symfony\Component\DependencyInjection\Tests\Loader;
 
+use Symfony\Bridge\PhpUnit\ErrorAssert;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Reference;
@@ -553,5 +554,27 @@ class XmlFileLoaderTest extends \PHPUnit_Framework_TestCase
         $loader->load('services23.xml');
 
         $this->assertTrue($container->getDefinition('bar')->isAutowired());
+    }
+
+    /**
+     * @group legacy
+     * @requires function Symfony\Bridge\PhpUnit\ErrorAssert::assertDeprecationsAreTriggered
+     */
+    public function testAliasDefinitionContainsUnsupportedElements()
+    {
+        $deprecations = array(
+            'Using the attribute "class" is deprecated for alias definition "bar"',
+            'Using the element "tag" is deprecated for alias definition "bar"',
+            'Using the element "factory" is deprecated for alias definition "bar"',
+        );
+
+        ErrorAssert::assertDeprecationsAreTriggered($deprecations, function () {
+            $container = new ContainerBuilder();
+            $loader = new XmlFileLoader($container, new FileLocator(self::$fixturesPath.'/xml'));
+
+            $loader->load('legacy_invalid_alias_definition.xml');
+
+            $this->assertTrue($container->has('bar'));
+        });
     }
 }

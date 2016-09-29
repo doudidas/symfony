@@ -1066,6 +1066,9 @@ UPGRADE FROM 2.x to 3.0
    introduced in 2.8, and move your voting logic to the to the `supports($attribute, $subject)`
    and `voteOnAttribute($attribute, $object, TokenInterface $token)` methods.
 
+ * The `vote()` method from the `VoterInterface` was changed to now accept arbitrary
+   types, and not only objects.
+
  * The `supportsClass` and `supportsAttribute` methods were
    removed from the `VoterInterface` interface.
 

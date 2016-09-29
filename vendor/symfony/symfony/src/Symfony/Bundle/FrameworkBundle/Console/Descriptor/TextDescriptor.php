@@ -274,6 +274,15 @@ class TextDescriptor extends Descriptor
         }
         $tableRows[] = array('Tags', $tagInformation);
 
+        $calls = $definition->getMethodCalls();
+        if (count($calls) > 0) {
+            $callInformation = array();
+            foreach ($calls as $call) {
+                $callInformation[] = $call[0];
+            }
+            $tableRows[] = array('Calls', implode(', ', $callInformation));
+        }
+
         $tableRows[] = array('Public', $definition->isPublic() ? 'yes' : 'no');
         $tableRows[] = array('Synthetic', $definition->isSynthetic() ? 'yes' : 'no');
         $tableRows[] = array('Lazy', $definition->isLazy() ? 'yes' : 'no');

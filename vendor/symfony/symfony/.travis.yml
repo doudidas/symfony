@@ -9,6 +9,8 @@ addons:
     apt_packages:
         - parallel
         - language-pack-fr-base
+        - ldap-utils
+        - slapd
 
 env:
     global:
@@ -26,7 +28,7 @@ matrix:
         - php: 5.6
         - php: 7.0
           env: deps=high
-        - php: 7.1
+        - php: 7.0
           env: deps=low
     fast_finish: true
 
@@ -35,10 +37,14 @@ cache:
         - .phpunit
         - php-$MIN_PHP
 
-services: mongodb
+services:
+    - mongodb
+    - redis-server
 
 before_install:
     - stty cols 120
+    - mkdir /tmp/slapd
+    - slapd -f src/Symfony/Component/Ldap/Tests/Fixtures/conf/slapd.conf -h ldap://localhost:3389 &
     - PHP=$TRAVIS_PHP_VERSION
     # Matrix lines for intermediate PHP versions are skipped for pull requests
     - if [[ ! $deps && ! $PHP = ${MIN_PHP%.*} && ! $PHP = hhvm* && $TRAVIS_PULL_REQUEST != false ]]; then deps=skip; skip=1; fi
@@ -54,10 +60,13 @@ before_install:
     - if [[ ! $deps && $PHP = 5.* ]]; then (cd src/Symfony/Component/Debug/Resources/ext && phpize && ./configure && make && echo extension = $(pwd)/modules/symfony_debug.so >> $INI_FILE); fi
     - if [[ ! $skip && $PHP = 5.* ]]; then pecl install -f memcached-2.1.0; fi
     - if [[ ! $skip && ! $PHP = hhvm* ]]; then echo extension = ldap.so >> $INI_FILE; fi
+    - if [[ ! $skip && ! $PHP = hhvm* ]]; then echo extension = redis.so >> $INI_FILE; fi;
     - if [[ ! $skip && ! $PHP = hhvm* ]]; then phpenv config-rm xdebug.ini || echo "xdebug not available"; fi
-    - if [[ ! $skip ]]; then cp .composer/* ~/.composer/; fi
+    - if [[ ! $skip ]]; then [ -d ~/.composer ] || mkdir ~/.composer; cp .composer/* ~/.composer/; fi
     - if [[ ! $skip ]]; then ./phpunit install; fi
     - if [[ ! $skip ]]; then export PHPUNIT=$(readlink -f ./phpunit); fi
+    - if [[ ! $skip ]]; then ldapadd -h localhost:3389 -D cn=admin,dc=symfony,dc=com -w symfony -f src/Symfony/Component/Ldap/Tests/Fixtures/data/base.ldif; fi
+    - if [[ ! $skip ]]; then ldapadd -h localhost:3389 -D cn=admin,dc=symfony,dc=com -w symfony -f src/Symfony/Component/Ldap/Tests/Fixtures/data/fixtures.ldif; fi
 
 install:
     - if [[ ! $skip ]]; then COMPONENTS=$(find src/Symfony -mindepth 3 -type f -name phpunit.xml.dist -printf '%h\n'); fi

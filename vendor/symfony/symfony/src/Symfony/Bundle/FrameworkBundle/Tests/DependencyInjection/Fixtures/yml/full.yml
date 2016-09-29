@@ -52,8 +52,8 @@ framework:
     serializer:
          enabled:        true
          enable_annotations: true
-         cache:          serializer.mapping.cache.apc
          name_converter: serializer.name_converter.camel_case_to_snake_case
+    property_info: ~
     ide: file%%link%%format
     request:
         formats:

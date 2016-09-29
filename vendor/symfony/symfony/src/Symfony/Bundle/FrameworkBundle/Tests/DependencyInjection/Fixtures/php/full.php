@@ -66,9 +66,9 @@ $container->loadFromExtension('framework', array(
     'serializer' => array(
         'enabled' => true,
         'enable_annotations' => true,
-        'cache' => 'serializer.mapping.cache.apc',
         'name_converter' => 'serializer.name_converter.camel_case_to_snake_case',
     ),
+    'property_info' => true,
     'ide' => 'file%%link%%format',
     'request' => array(
         'formats' => array(
